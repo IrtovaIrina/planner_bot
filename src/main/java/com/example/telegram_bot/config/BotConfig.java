@@ -34,6 +34,4 @@ public class BotConfig {
     public String getToken() {
         return token;
     }
-
-
 }
