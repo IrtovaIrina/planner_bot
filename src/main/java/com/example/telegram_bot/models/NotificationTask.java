@@ -3,7 +3,9 @@ package com.example.telegram_bot.models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity(name = "notification_task")
@@ -16,6 +18,16 @@ public class NotificationTask {
     private String event;
     private LocalDateTime time;
     private LocalDateTime eventTime;
+
+    public LocalDate getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(LocalDate eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    private LocalDate eventDate;
 
     public LocalDateTime getEventTime() {
         return eventTime;
@@ -65,7 +77,7 @@ public class NotificationTask {
         return command;
     }
 
-    public void setCommand(String command ) {
+    public void setCommand(String command) {
         this.command = command;
     }
 

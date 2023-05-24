@@ -1,4 +1,5 @@
 package com.example.telegram_bot.listener;
+
 import com.example.telegram_bot.models.NotificationTask;
 import com.example.telegram_bot.service.NotificationTaskService;
 import com.pengrad.telegrambot.TelegramBot;
@@ -25,8 +26,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private NotificationTaskService service;
     @Autowired
     private TelegramBot telegramBot;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         telegramBot.setUpdatesListener(this);
     }
 
@@ -34,7 +36,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.service = service;
 
         BotCommand[] commandsArray = new BotCommand[]{
-        new BotCommand("/add","add an event in the format : 01.01.2022 20:00 Сделать домашнюю работу")};
+                new BotCommand("/add", "add an event in the format : 01.01.2022 20:00 Сделать домашнюю работу")};
         SetMyCommands commands = new SetMyCommands(commandsArray);
     }
 
@@ -42,7 +44,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             log.info("Processing updates " + update);
-            if(update.message() != null) {
+            if (update.message() != null) {
                 processMessage(updates);
             }
         });
@@ -69,23 +71,24 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             + "\n" + "We are start!");
                     log.info("New bot was saved");
                 }
-            }
-            else{
-                if(matcher.matches()){
+            } else {
+                if (matcher.matches()) {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-                    String date = matcher.group(0).substring(0,16);
+                    String date = matcher.group(0).substring(0, 16);
                     String task = matcher.group(2);
                     NotificationTask nt = new NotificationTask();
                     nt.setCommand("/add");
                     nt.setEvent(task);
                     nt.setTime(time);
-                    nt.setEventTime(LocalDateTime.parse(date,formatter));
+                    LocalDateTime timeEvent = LocalDateTime.parse(date, formatter);
+                    nt.setEventTime(timeEvent);
+                    nt.setEventDate(timeEvent.toLocalDate());
                     nt.setChatId(chatId);
                     service.save(nt);
-                    service.sentMessage(chatId,"Event was saved");
+                    service.sentMessage(chatId, "Event was saved");
                     log.info("event from " + chatId + " was saved");
-                }else{
-                    service.sentMessage(chatId,"wrong message");
+                } else {
+                    service.sentMessage(chatId, "wrong message");
                     log.info("it was wrong message");
                 }
             }
