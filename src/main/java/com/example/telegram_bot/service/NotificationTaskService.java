@@ -47,8 +47,8 @@ public class NotificationTaskService {
     public Collection<NotificationTask> findAllByChatId(Long chatId){
         return repository.findAllByChatId(chatId);
     }
-    public Collection<NotificationTask> findAllByTime(LocalDateTime time){
-        return repository.findAllByTime(time);
+    public Collection<NotificationTask> findAll(){
+        return repository.findAll();
     }
     public void sentMessage(Long chatId, String textToSent) {
         SendMessage message = new SendMessage(chatId, textToSent);
