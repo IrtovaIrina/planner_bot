@@ -31,7 +31,6 @@ public class Scheduler {
                     .forEach(x -> {
                         service.sentMessage(x.getChatId(), "Reminder: " + x.getEvent());
                         log.info("the event was sent to " + x.getChatId());});
-
     }
 
 }
